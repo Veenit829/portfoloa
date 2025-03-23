@@ -1,1 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Digital Clock</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            flex-direction: column;
+            position: relative;
+            transition: background-color 0.5s ease;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .clock-container {
+            margin-bottom: 20px;
+        }
+
+        .clock {
+            font-size: 200px; /* Even larger clock size */
+            font-weight: bold;
+            padding: 40px; /* Increased padding */
+            background-color: black;
+            border-radius: 20px; /* Larger border radius */
+            transition: all 0.5s ease;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Clock Styles */
+        .default {
+            background-color: black;
+            color: white;
+        }
+
+        .neon {
+            background-color: #000;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 40px #0f0;
+        }
+
+        .simple {
+            background-color: #fff;
+            color: #000;
+            font-family: 'Helvetica', sans-serif;
+        }
+
+        .night {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: 'Georgia', serif;
+        }
+
+        .day-night {
+            background-color: #f0f0f0;
+            color: #333;
+            font-family: 'Verdana', sans-serif;
+        }
+
+        .deniz {
+            font-size: 220px; /* Larger size for Deniz style */
+            background-color: #000;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .wow {
+            background-color: #000;
+            color: #ff0;
+            text-shadow: 0 0 10px #ff0, 0 0 20px #ff0, 0 0 40px #ff0;
+        }
+
+        .launcher {
+            background-color: #333;
+            color: #00ffcc;
+            font-family: 'Courier New', monospace;
+        }
+
+        .standby {
+            background-color: #222;
+            color: #ccc;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .giant {
+            font-size: 260px; /* Even larger size for Giant style */
+            background-color: #000;
+            color: #fff;
+        }
+
+        .zen {
+            background-color: #333;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 5px;
+        }
+
+        .magic {
+            background-color: #000;
+            color: #ff69b4;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+        }
+
+        .android {
+            background-color: #333;
+            color: #00ffcc;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .fuse {
+            background-color: #000;
+            color: #ff4500;
+            text-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500;
+        }
+
+        .flipclocker {
+            background-color: #000;
+            color: #00ffcc;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        }
+
+        .analog {
+            font-size: 180px; /* Larger size for Analog style */
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .number {
+            font-size: 200px; /* Larger size for Number style */
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .world-time {
+            font-size: 160px; /* Larger size for World Time style */
+            background-color: #000;
+            color: #fff;
+            font-family: 'Verdana', sans-serif;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #fullscreen-btn {
+            background-color: #ff9800;
+        }
+
+        #fullscreen-btn:hover {
+            background-color: #fb8c00;
+        }
+
+        .settings-menu {
+            display: none;
+            margin-top: 20px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #close-settings-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        #close-settings-btn:hover {
+            background-color: #e53935;
+        }
+
+        .setting-option {
+            margin-bottom: 10px;
+        }
+
+        .setting-option button {
+            width: 100%;
+            padding: 10px;
+            background-color: #444;
+            border: 1px solid #333;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .setting-option button:hover {
+            background-color: #555;
+        }
+
+        input, select {
+            margin-top: 5px;
+            padding: 5px;
+            font-size: 16px;
+            width: 100%;
+            background-color: #222;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        audio {
+            display: none;
+        }
+
+        .fullscreen {
+            background-color: #000000 !important;
+            color: white !important;
+        }
+
+        .settings {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .settings select {
+            padding: 5px;
+            margin-top: 10px;
+            font-size: 12px;
+            background-color: #222;
+            color: white;
+            border-radius: 5px;
+            border: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="clock-container">
+            <div class="clock" id="clock">00:00:00</div>
+            <div class="buttons">
+                <button id="settings-btn" onclick="toggleSettings()">Settings</button>
+                <button onclick="playLofiMusic()">Play Lofi Study Songs</button>
+                <button id="fullscreen-btn" onclick="toggleFullScreen()">Full Screen</button>
+            </div>
+        </div>
+
+        <!-- Settings Menu -->
+        <div class="settings-menu" id="settings-menu">
+            <button id="close-settings-btn" onclick="toggleSettings()">Close</button>
+            
+            <!-- Customize Clock -->
+            <div class="setting-option">
+                <button onclick="toggleCustomizeClock()">Customize Clock</button>
+            </div>
+            <div id="customize-clock-options" class="setting-option" style="display: none;">
+                <h3>Customize Clock</h3>
+                
+                <!-- Background Color -->
+                <label for="bg-color">Background Color:</label>
+                <input type="color" id="bg-color" value="#000000" onchange="changeBackgroundColor()">
+                <br>
+
+                <!-- Background Fade Mode -->
+                <label for="bg-fade">Background Color Fade Mode:</label>
+                <select id="bg-fade">
+                    <option value="on">Turn On</option>
+                    <option value="off">Turn Off</option>
+                </select>
+                <br>
+
+                <!-- Background Image -->
+                <label for="bg-image">New Background Image:</label>
+                <input type="file" id="bg-image" accept="image/*" onchange="changeBackgroundImage()">
+                <br>
+
+                <!-- Clock Font -->
+                <label for="clock-font">Clock Font:</label>
+                <select id="clock-font" onchange="changeClockFont()">
+                    <option value="Arial">Arial</option>
+                    <option value="Courier">Courier</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                </select>
+                <br>
+
+                <!-- Clock Size -->
+                <label>Clock Size:</label>
+                <button onclick="decreaseClockSize()">Decrease</button>
+                <button onclick="increaseClockSize()">Increase</button>
+                <br>
+
+                <!-- Clock Text Color -->
+                <label for="clock-text-color">Clock Text Color:</label>
+                <select id="clock-text-color" onchange="changeClockTextColor()">
+                    <option value="white">White Text</option>
+                    <option value="black">Black Text</option>
+                    <option value="opposite">Opposite</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <input type="color" id="custom-color" style="display: none;" onchange="applyCustomColor()">
+                <br>
+
+                <!-- Show/Hide Seconds -->
+                <label for="show-seconds">Show Seconds:</label>
+                <select id="show-seconds" onchange="toggleSeconds()">
+                    <option value="show">Show</option>
+                    <option value="hide">Hide</option>
+                </select>
+                <br>
+
+                <!-- Time Format -->
+                <label for="time-format">Time Format:</label>
+                <select id="time-format" onchange="changeTimeFormat()">
+                    <option value="12hr">12hr</option>
+                    <option value="24hr">24hr</option>
+                </select>
+                <br>
+
+                <!-- Clear Preferences -->
+                <button onclick="clearPreferences()">Clear All Preferences</button>
+            </div>
+        </div>
+
+        <!-- Audio Player for Lofi Music -->
+        <audio id="lofi-audio" style="display: none;" controls>
+            <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <!-- Dial Style Selector -->
+        <div class="settings">
+            <label for="dial-style">Select Clock Style:</label>
+            <select id="dial-style" onchange="changeDialStyle()">
+                <option value="default">Default: मूल स्टाइल</option>
+                <option value="neon">Neon Digital Clock</option>
+                <option value="simple">Simple Clock</option>
+                <option value="night">Night Clock</option>
+                <option value="day-night">Day and Night Clock</option>
+                <option value="deniz">Deniz Big Clock</option>
+                <option value="wow">Wow Clock</option>
+                <option value="launcher">Clock Launcher</option>
+                <option value="standby">Standby Desk Clock</option>
+                <option value="giant">Giant Clock</option>
+                <option value="zen">Zen Flip Clock</option>
+                <option value="magic">Magic Clock Widget</option>
+                <option value="android">Android Clock Widget</option>
+                <option value="fuse">Fuse Clock</option>
+                <option value="flipclocker">FlipClocker</option>
+                <option value="analog">Analog Clock</option>
+                <option value="number">Number Clock</option>
+                <option value="world-time">World Time</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        // Clock Update Function
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            const timeFormat = document.getElementById('time-format').value;
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            if (timeFormat === '12hr') {
+                hours = hours % 12 || 12;
+            }
+
+            const showSeconds = document.getElementById('show-seconds').value === 'show';
+            clock.textContent = `${hours.toString().padStart(2, '0')}:${minutes}${showSeconds ? `:${seconds}` : ''}`;
+        }
+
+        // Toggle Settings Menu
+        function toggleSettings() {
+            const settingsMenu = document.getElementById('settings-menu');
+            settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Toggle Customize Clock Options
+        function toggleCustomizeClock() {
+            const customizeOptions = document.getElementById('customize-clock-options');
+            customizeOptions.style.display = customizeOptions.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Change Background Color
+        function changeBackgroundColor() {
+            const color = document.getElementById('bg-color').value;
+            document.body.style.backgroundColor = color;
+        }
+
+        // Change Background Image
+        function changeBackgroundImage() {
+            const file = document.getElementById('bg-image').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Change Clock Font
+        function changeClockFont() {
+            const font = document.getElementById('clock-font').value;
+            document.getElementById('clock').style.fontFamily = font;
+        }
+
+        // Increase Clock Size
+        function increaseClockSize() {
+            const clock = document.getElementById('clock');
+            const currentSize = parseInt(window.getComputedStyle(clock).fontSize);
+            clock.style.fontSize = `${currentSize + 10}px`;
+        }
+
+        // Decrease Clock Size
+        function decreaseClockSize() {
+            const clock = document.getElementById('clock');
+            const currentSize = parseInt(window.getComputedStyle(clock).fontSize);
+            clock.style.fontSize = `${currentSize - 10}px`;
+        }
+
+        // Change Clock Text Color
+        function changeClockTextColor() {
+            const color = document.getElementById('clock-text-color').value;
+            const clock = document.getElementById('clock');
+            if (color === 'custom') {
+                document.getElementById('custom-color').style.display = 'inline-block';
+            } else {
+                document.getElementById('custom-color').style.display = 'none';
+                clock.style.color = color === 'opposite' ? (document.body.style.backgroundColor === 'black' ? 'white' : 'black') : color;
+            }
+        }
+
+        // Apply Custom Color
+        function applyCustomColor() {
+            const color = document.getElementById('custom-color').value;
+            document.getElementById('clock').style.color = color;
+        }
+
+        // Toggle Seconds
+        function toggleSeconds() {
+            updateClock();
+        }
+
+        // Change Time Format
+        function changeTimeFormat() {
+            updateClock();
+        }
+
+        // Change Dial Style
+        function changeDialStyle() {
+            const style = document.getElementById('dial-style').value;
+            const clock = document.getElementById('clock');
+            clock.className = 'clock ' + style;
+        }
+
+        // Clear Preferences
+        function clearPreferences() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // Fullscreen Toggle
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Play Lofi Music
+        function playLofiMusic() {
+            const audio = document.getElementById('lofi-audio');
+            if (audio.paused) {
+                audio.play();
+                alert("Lofi music is now playing. Enjoy your study session!");
+            } else {
+                audio.pause();
+                alert("Lofi music paused.");
+            }
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+        updateClock(); // Initialize clock
+    </script>
+</body>
+</html>
